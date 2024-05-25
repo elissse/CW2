@@ -13,6 +13,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+
 public class Main {
     private static boolean[] done = new boolean[8];
 
@@ -31,14 +33,8 @@ public class Main {
             Future<Boolean> future = poolService.submit(new Task(file, finishProduct));
         }
         poolService.shutdown();
-        if (done[done.length - 1]) {
-            BufferedImage in = ImageIO.read(new File(finishProduct));
-            BufferedImage newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g = newImage.createGraphics();
-            g.drawImage(in, 0, 0, null);
-            ImageIO.write(newImage, "PNG", new FileOutputStream(finishProduct));
-        }
     }
+
 
     public static int evenOrOdd(byte b) {
         return Integer.bitCount((int) b);
@@ -87,7 +83,6 @@ public class Main {
                     }
                 }
                 System.out.println(order);
-
                 for (int i = 0; i < picturePart.length; i++) {
                     evenOrNo += evenOrOdd(picturePart[i]);
                     fw.write(picturePart[i]);
