@@ -72,7 +72,7 @@ public class Main {
 
         public synchronized Boolean writing(byte[] picturePart, int order) {
             int evenOrNo = -1;
-            try (Writer fw = new FileWriter(finishProduct, true)) {
+            try (OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(finishProduct))) {
                 if (order != 0) {
                     while (!done[order - 1]) {
                         try {
@@ -83,9 +83,9 @@ public class Main {
                     }
                 }
                 System.out.println(order);
+                fw.write(Arrays.toString(picturePart));
                 for (int i = 0; i < picturePart.length; i++) {
                     evenOrNo += evenOrOdd(picturePart[i]);
-                    fw.write(picturePart[i]);
                 }
                 evenOrNo %= 2;
                 done[order] = true;
